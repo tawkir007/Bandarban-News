@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>বান্দরবান সংবাদ</title>
+<meta name="theme-color" content="#1F4D3F">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mist:#F1F5F3; --paper:#FFFFFF; --ink:#16241F; --muted:#5C6F68;
+  --hill:#1F4D3F; --hill-2:#2F6B58; --sangu:#1D6F7A; --line:#D5DFDB; --mark:#C98A1B;
+  --serif:"Noto Serif Bengali","Kalpurush",Georgia,serif;
+  --sans:"Hind Siliguri","Noto Sans Bengali","Kalpurush",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--mist:#0F1A17;--paper:#15231F;--ink:#E6EEEA;--muted:#9AB0A8;--line:#27393380;--hill:#102A22;--hill-2:#2F6B58;--sangu:#5FB3BF;--mark:#E0A63A}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--mist);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sangu);outline-offset:2px}
+
+header{background:var(--hill);color:#F1F5F3;padding:calc(env(safe-area-inset-top,0px) + 18px) 18px 0}
+.wrap{max-width:720px;margin:0 auto}
+h1{font-family:var(--serif);font-weight:700;font-size:1.9rem;line-height:1.2;margin:0}
+.sub{margin:4px 0 0;color:#B9CFC6;font-size:.95rem}
+.ridge{display:block;width:100%;height:46px;margin-top:10px;color:var(--mist)}
+
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:14px 18px 6px}
+.bar .wrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap;width:100%}
+.chip{font:inherit;font-weight:500;padding:6px 16px;border-radius:999px;border:1.5px solid var(--hill-2);background:transparent;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--hill-2);color:#fff}
+.refresh{margin-left:auto;font:inherit;font-weight:500;padding:6px 14px;border-radius:8px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.status{padding:0 18px;color:var(--muted);font-size:.9rem;min-height:1.6em}
+
+main{padding:4px 18px 40px}
+ol{list-style:none;margin:0;padding:0}
+.item{display:grid;grid-template-columns:76px 1fr;gap:0 14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.meta{font-size:.82rem;color:var(--muted);line-height:1.35;padding-top:4px;border-right:3px solid var(--line);padding-right:10px;text-align:right}
+.item.fresh .meta{border-right-color:var(--mark)}
+.meta b{display:block;color:var(--ink);font-weight:600}
+.item a{text-decoration:none;font-weight:500;font-size:1.06rem;line-height:1.5}
+.item a:hover{text-decoration:underline;text-decoration-color:var(--sangu);text-underline-offset:3px}
+.empty{padding:28px 0;color:var(--muted)}
+
+section.social{margin-top:30px}
+h2{font-family:var(--serif);font-size:1.25rem;margin:0 0 4px}
+.social p{margin:0 0 12px;color:var(--muted);font-size:.95rem}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{padding:8px 14px;border-radius:8px;background:var(--paper);border:1.5px solid var(--line);text-decoration:none;font-weight:500}
+.links a:hover{border-color:var(--sangu)}
+footer{padding:0 18px calc(env(safe-area-inset-bottom,0px) + 24px);color:var(--muted);font-size:.82rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>বান্দরবান সংবাদ</h1>
+    <p class="sub">জাতীয় ও স্থানীয় পত্রিকার খবর এক জায়গায়</p>
+  </div>
+  <svg class="ridge" viewBox="0 0 720 46" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0 46V30L70 12l55 20 70-26 80 30 60-18 85 24 70-22 75 20 60-14 95 20V46Z"/>
+  </svg>
+</header>
+
+<div class="bar"><div class="wrap">
+  <button class="chip" data-lang="all" aria-pressed="true">সব</button>
+  <button class="chip" data-lang="bn" aria-pressed="false">বাংলা</button>
+  <button class="chip" data-lang="en" aria-pressed="false">English</button>
+  <button class="refresh" id="refresh">নতুন খবর আনুন</button>
+</div></div>
+<div class="status wrap" id="status" role="status" aria-live="polite"></div>
+
+<main class="wrap">
+  <ol id="list"></ol>
+
+  <section class="social">
+    <h2>সোশ্যাল মিডিয়া</h2>
+    <p>Facebook ও X-এর খবর স্বয়ংক্রিয়ভাবে আনা যায় না। এই লিংকগুলোতে ট্যাপ করলে সর্বশেষ পোস্ট খুলবে।</p>
+    <div class="links">
+      <a href="https://www.facebook.com/search/posts?q=%E0%A6%AC%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A6%E0%A6%B0%E0%A6%AC%E0%A6%BE%E0%A6%A8" target="_blank" rel="noopener">Facebook-এ বান্দরবান</a>
+      <a href="https://x.com/search?q=%E0%A6%AC%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A6%E0%A6%B0%E0%A6%AC%E0%A6%BE%E0%A6%A8&f=live" target="_blank" rel="noopener">X-এ বান্দরবান</a>
+      <a href="https://www.youtube.com/results?search_query=%E0%A6%AC%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A6%E0%A6%B0%E0%A6%AC%E0%A6%BE%E0%A6%A8&sp=CAI%253D" target="_blank" rel="noopener">YouTube-এ বান্দরবান</a>
+    </div>
+  </section>
+</main>
+<footer class="wrap">খবরের সূত্র: Google News। শিরোনামে ট্যাপ করলে মূল পত্রিকার পাতা খুলবে।</footer>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const state = { items: [], lang: 'all' };
+
+const bn = (n) => String(n).replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[d]);
+function ago(iso) {
+  const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
+  if (m < 60) return bn(Math.max(m, 1)) + ' মিনিট আগে';
+  const h = Math.round(m / 60);
+  if (h < 24) return bn(h) + ' ঘণ্টা আগে';
+  return bn(Math.round(h / 24)) + ' দিন আগে';
+}
+
+function render() {
+  const list = $('#list');
+  list.textContent = '';
+  const items = state.items.filter((i) => state.lang === 'all' || i.lang === state.lang);
+  if (!items.length) {
+    const li = document.createElement('li');
+    li.className = 'empty';
+    li.textContent = 'এই ভাষায় এখন কোনো খবর নেই। "সব" বেছে নিন।';
+    list.append(li);
+    return;
+  }
+  for (const it of items) {
+    const li = document.createElement('li');
+    li.className = 'item' + (Date.now() - new Date(it.date) < 6 * 3600e3 ? ' fresh' : '');
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    const src = document.createElement('b');
+    src.textContent = it.source || 'অজানা সূত্র';
+    meta.append(src, ago(it.date));
+    const a = document.createElement('a');
+    a.href = it.link;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = it.title;
+    li.append(meta, a);
+    list.append(li);
+  }
+}
+
+function status(t) { $('#status').textContent = t; }
+
+async function load() {
+  status('খবর আনা হচ্ছে…');
+  try {
+    const r = await fetch('/api/news');
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    state.items = d.items;
+    try { localStorage.setItem('bb-news', JSON.stringify(d)); } catch (e) {}
+    status(bn(d.items.length) + 'টি খবর পাওয়া গেছে');
+  } catch (e) {
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem('bb-news')); } catch (x) {}
+    if (cached) {
+      state.items = cached.items;
+      status('ইন্টারনেট নেই। আগে সেভ করা খবর দেখানো হচ্ছে।');
+    } else {
+      status('খবর আনা যায়নি। ইন্টারনেট দেখে আবার চেষ্টা করুন।');
+    }
+  }
+  render();
+}
+
+document.querySelectorAll('.chip').forEach((b) =>
+  b.addEventListener('click', () => {
+    state.lang = b.dataset.lang;
+    document.querySelectorAll('.chip').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    render();
+  })
+);
+$('#refresh').addEventListener('click', load);
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+load();
+</script>
+</body>
+</html>

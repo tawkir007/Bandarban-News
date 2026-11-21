@@ -1,0 +1,15 @@
+{
+  "name": "বান্দরবান সংবাদ",
+  "short_name": "বান্দরবান",
+  "description": "বান্দরবানের সর্বশেষ খবর এক জায়গায়",
+  "lang": "bn",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F1F5F3",
+  "theme_color": "#1F4D3F",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
